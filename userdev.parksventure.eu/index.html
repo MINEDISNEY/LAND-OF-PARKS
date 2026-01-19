@@ -1,0 +1,258 @@
+<html lang="fr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandOfASS - My Profile</title>
+
+    <!--
+        🚀 Deployment:
+        - DEV: https://userdev.parksventurenetwork.eu
+        - PROD: https://user.landofparks.eu
+    -->
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🎢 <span class="gradient-text">LandOfASS</span></h1>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Accueil</a>
+                <a href="#photos" class="nav-link">Photos</a>
+                <a href="#stats" class="nav-link">Statistiques</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Accédez à vos souvenirs</h2>
+                <p class="hero-subtitle">Vos photos d'attractions en un clic</p>
+
+                <!-- Code Entry -->
+                <div class="code-entry-card">
+                    <h3>🔑 Entrez votre code d'accès</h3>
+                    <p class="hint">Obtenez votre code en jeu avec <code>/photos code</code></p>
+
+                    <div class="code-input-group">
+                        <input type="text" maxlength="1" class="code-input" id="code1" autofocus="">
+                        <input type="text" maxlength="1" class="code-input" id="code2">
+                        <input type="text" maxlength="1" class="code-input" id="code3">
+                        <input type="text" maxlength="1" class="code-input" id="code4">
+                        <input type="text" maxlength="1" class="code-input" id="code5">
+                        <input type="text" maxlength="1" class="code-input" id="code6">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="submitCode()">
+                        <i class="fas fa-sign-in-alt"></i> Accéder à mon profil
+                    </button>
+
+                    <p class="error-message" id="errorMessage"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section (Hidden by default) -->
+    <section class="profile-section" id="profileSection" style="">
+        <div class="container">
+            <!-- Player Header -->
+            <div class="player-header">
+                <div class="player-avatar">
+                    <img id="playerAvatar" src="" alt="Player Avatar">
+                </div>
+                <div class="player-info">
+                    <h2 id="playerName">Player</h2>
+                    <p class="player-uuid" id="playerUUID">UUID: ...</p>
+                    <p class="player-code">ᴄᴏᴅᴇ: <span id="currentCode">------</span></p>
+                </div>
+                <div class="player-stats-mini">
+                    <div class="stat-mini">
+                        <i class="fas fa-camera"></i>
+                        <span id="photoCountMini">0</span>
+                        <small>Photos</small>
+                    </div>
+                    <div class="stat-mini">
+                        <i class="fas fa-ticket"></i>
+                        <span id="rideCountMini">0</span>
+                        <small>Attractions</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('photos')">
+                    <i class="fas fa-images"></i> Photos
+                </button>
+                <button class="tab" onclick="showTab('stats')">
+                    <i class="fas fa-chart-bar"></i> Statistiques
+                </button>
+                <button class="tab" onclick="showTab('rides')">
+                    <i class="fas fa-ticket-alt"></i> Attractions
+                </button>
+                <button class="tab" onclick="showTab('settings')">
+                    <i class="fas fa-cog"></i> Paramètres
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Photos Tab -->
+                <div class="tab-pane active" id="photosTab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-camera"></i> ᴍʏ ᴘʜᴏᴛᴏs</h3>
+                        <button class="btn btn-secondary" onclick="downloadAllPhotos()">
+                            <i class="fas fa-download"></i> ᴅᴏᴡɴʟᴏᴀᴅ ᴀʟʟ
+                        </button>
+                    </div>
+
+                    <div class="photos-grid" id="photosGrid">
+                        <!-- Photos will be loaded here -->
+                    </div>
+
+                    <div class="no-data" id="noPhotos" style="">
+                        <i class="fas fa-camera-retro"></i>
+                        <p>ɴᴏ ᴘʜᴏᴛᴏs ʏᴇᴛ</p>
+                        <small>ʀɪᴅᴇ ᴀɴ ᴀᴛᴛʀᴀᴄᴛɪᴏɴ ᴛᴏ ɢᴇᴛ ʏᴏᴜʀ ғɪʀsᴛ ᴘʜᴏᴛᴏ!</small>
+                    </div>
+                </div>
+
+                <!-- Stats Tab -->
+                <div class="tab-pane" id="statsTab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-chart-line"></i> sᴛᴀᴛɪsᴛɪᴄs</h3>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-images"></i></div>
+                            <div class="stat-content">
+                                <h4 id="totalPhotos">0</h4>
+                                <p>ᴛᴏᴛᴀʟ ᴘʜᴏᴛᴏs</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                            <div class="stat-content">
+                                <h4 id="totalRides">0</h4>
+                                <p>ᴛᴏᴛᴀʟ ʀɪᴅᴇs</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-star"></i></div>
+                            <div class="stat-content">
+                                <h4 id="favoriteRide">N/A</h4>
+                                <p>ғᴀᴠᴏʀɪᴛᴇ ʀɪᴅᴇ</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-calendar"></i></div>
+                            <div class="stat-content">
+                                <h4 id="lastVisit">N/A</h4>
+                                <p>ʟᴀsᴛ ᴠɪsɪᴛ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h4>ᴘʜᴏᴛᴏs ʙʏ ᴀᴛᴛʀᴀᴄᴛɪᴏɴ</h4>
+                        <canvas id="photosChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Rides Tab -->
+                <div class="tab-pane" id="ridesTab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-list"></i> ʀɪᴅᴇ ʜɪsᴛᴏʀʏ</h3>
+                    </div>
+
+                    <div class="rides-list" id="ridesList">
+                        <!-- Rides will be loaded here -->
+                    </div>
+
+                    <div class="no-data" id="noRides">
+                        <i class="fas fa-roller-coaster"></i>
+                        <p>ᴄᴏᴍɪɴɢ sᴏᴏɴ</p>
+                        <small>ʀɪᴅᴇ ᴄᴏᴜɴᴛs ᴡɪʟʟ ʙᴇ ᴀᴠᴀɪʟᴀʙʟᴇ sᴏᴏɴ!</small>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-pane" id="settingsTab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-cog"></i> sᴇᴛᴛɪɴɢs</h3>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>🔑 ᴀᴄᴄᴇss ᴄᴏᴅᴇ</h4>
+                        <p>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴄᴏᴅᴇ: <strong id="settingsCode">------</strong></p>
+                        <p class="hint">ᴇxᴘɪʀᴇs: <span id="expiryDate">N/A</span></p>
+                        <button class="btn btn-secondary" onclick="copyCode()">
+                            <i class="fas fa-copy"></i> ᴄᴏᴘʏ ᴄᴏᴅᴇ
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareProfile()">
+                            <i class="fas fa-share"></i> sʜᴀʀᴇ ᴘʀᴏғɪʟᴇ
+                        </button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>📊 ᴅᴀᴛᴀ</h4>
+                        <button class="btn btn-secondary" onclick="refreshData()">
+                            <i class="fas fa-sync"></i> ʀᴇғʀᴇsʜ ᴅᴀᴛᴀ
+                        </button>
+                        <button class="btn btn-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> ʟᴏɢᴏᴜᴛ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="Photo">
+            <div class="modal-info">
+                <h3 id="modalTitle">Attraction</h3>
+                <p id="modalDate">Date</p>
+                <div class="modal-actions">
+                    <a href="#" id="modalDownload" class="btn btn-primary" download="">
+                        <i class="fas fa-download"></i> ᴅᴏᴡɴʟᴏᴀᴅ
+                    </a>
+                    <button class="btn btn-secondary" onclick="sharePhoto()">
+                        <i class="fas fa-share"></i> sʜᴀʀᴇ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 LandOfASS - ᴍɪɴᴇᴄʀᴀғᴛ ᴛʜᴇᴍᴇᴘᴀʀᴋ</p>
+            <p>ᴍᴀᴅᴇ ᴡɪᴛʜ 💩 ғᴏʀ ᴏᴜʀ ᴠɪsɪᴛᴏʀs</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+
+
+
+</body></html>
